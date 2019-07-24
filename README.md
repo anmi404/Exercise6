@@ -12,9 +12,13 @@ and for each exercise run:
 `npm install`
 `truffle compile`
 
+ganache-cli --gasLimit 300000000 --gasPrice 20000000000
+
 ## Develop
 
 To run truffle tests:
+
+`npm install truffle-hdwallet-provider@1.0.8`
 
 `truffle test ./test/ExerciseC6A.js` or `npm test`
 

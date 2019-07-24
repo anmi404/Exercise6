@@ -6,6 +6,8 @@ contract ExerciseC6A {
     /*                                       DATA VARIABLES                                     */
     /********************************************************************************************/
 
+    uint constant M = 2; //M
+    address[] multiCalls = new address[](0);
 
     struct UserProfile {
         bool isRegistered;
@@ -15,8 +17,8 @@ contract ExerciseC6A {
     address private contractOwner;                  // Account used to deploy contract
     mapping(address => UserProfile) userProfiles;   // Mapping for storing user profiles
 
-
-
+    bool private operational;
+    
     /********************************************************************************************/
     /*                                       EVENT DEFINITIONS                                  */
     /********************************************************************************************/
@@ -33,6 +35,7 @@ contract ExerciseC6A {
                                 public 
     {
         contractOwner = msg.sender;
+        operational = true;
     }
 
     /********************************************************************************************/
@@ -51,6 +54,12 @@ contract ExerciseC6A {
         _;
     }
 
+    modifier requireIsOperational()
+    {
+        require(operational == true, "Contract is not operational");
+        _;
+    }
+    
     /********************************************************************************************/
     /*                                       UTILITY FUNCTIONS                                  */
     /********************************************************************************************/
@@ -72,17 +81,39 @@ contract ExerciseC6A {
         return userProfiles[account].isRegistered;
     }
 
+   /**
+    * @dev Check if a user is registered
+    *
+    * @return A bool that indicates if the user is registered
+    */   
+    function isOperational
+                            (
+                                
+                            )
+                            external
+                            view
+                            returns(bool)
+    {
+        return operational;
+    }
+
+ /*   function setOperatingStatus ( bool mode ) external requireContractOwner {
+        operational = mode;
+    }
+*/
+    // including requireIsOperational locks contract forever!! lockout bug
     /********************************************************************************************/
     /*                                     SMART CONTRACT FUNCTIONS                             */
     /********************************************************************************************/
 
-    function registerUser
+    function registerUser 
                                 (
                                     address account,
                                     bool isAdmin
                                 )
                                 external
                                 requireContractOwner
+                                requireIsOperational
     {
         require(!userProfiles[account].isRegistered, "User is already registered.");
 
@@ -91,5 +122,31 @@ contract ExerciseC6A {
                                                 isAdmin: isAdmin
                                             });
     }
+
+    function setOperatingStatus
+                            (
+                                bool mode
+                            ) 
+                            external
+    {
+        require(mode != operational, "New mode must be different from existing mode");
+        require(userProfiles[msg.sender].isAdmin, "Caller is not an admin");
+
+        bool isDuplicate = false;
+        for(uint c=0; c<multiCalls.length; c++) {
+            if (multiCalls[c] == msg.sender) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        require(!isDuplicate, "Caller has already called this function.");
+
+        multiCalls.push(msg.sender);
+        if (multiCalls.length >= M) {
+            operational = mode;      
+            multiCalls = new address[](0);      
+        }
+    }
+
 }
 
