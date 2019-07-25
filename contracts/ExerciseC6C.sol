@@ -4,11 +4,12 @@ pragma solidity ^0.4.25;
 // OpenZeppelin's SafeMath library, when used correctly, protects agains such bugs
 // More info: https://www.nccgroup.trust/us/about-us/newsroom-and-events/blog/2018/november/smart-contract-insecurity-bad-arithmetic/
 
-import "../../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
-
+import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract ExerciseC6C {
     using SafeMath for uint256; // Allow SafeMath functions to be called for all uint256 types (similar to "prototype" in Javascript)
+
+    mapping (address => uint256) private authorizedContracts;
 
     /********************************************************************************************/
     /*                                       DATA VARIABLES                                     */
@@ -36,11 +37,7 @@ contract ExerciseC6C {
     * @dev Constructor
     *      The deploying account becomes contractOwner
     */
-    constructor
-                                (
-                                ) 
-                                public 
-    {
+    constructor ()  public{
         contractOwner = msg.sender;
     }
 
@@ -57,6 +54,12 @@ contract ExerciseC6C {
     modifier requireContractOwner()
     {
         require(msg.sender == contractOwner, "Caller is not contract owner");
+        _;
+    }
+
+     modifier isCallerAuthorized()
+    {
+        require(authorizedContracts[msg.sender] == 1, "Caller is not authorized");
         _;
     }
 
@@ -124,8 +127,7 @@ contract ExerciseC6C {
                                     uint256 bonus
 
                                 )
-                                internal
-                                requireContractOwner
+                                external
     {
         require(employees[id].isRegistered, "Employee is not registered.");
 
@@ -134,6 +136,16 @@ contract ExerciseC6C {
 
     }
 
+    function authorizeContract(address dataContract) external requireContractOwner {
+        authorizedContracts[dataContract] = 1;
+    }
+
+    function deauthorizeContract(address dataContract) external requireContractOwner {
+        delete authorizedContracts[dataContract];
+    }
+}
+
+/*
     function calculateBonus
                             (
                                 uint256 sales
@@ -153,8 +165,8 @@ contract ExerciseC6C {
             return sales.mul(10).div(100);
         }
     }
-
-    function addSale
+*/
+ /*   function addSale
                                 (
                                     string id,
                                     uint256 amount
@@ -168,6 +180,4 @@ contract ExerciseC6C {
                         calculateBonus(amount)
         );
     }
-
-
-}
+*/

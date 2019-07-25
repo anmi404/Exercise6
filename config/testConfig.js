@@ -2,21 +2,24 @@
 var ExerciseC6A = artifacts.require("ExerciseC6A");
 var ExerciseC6B = artifacts.require("ExerciseC6B");
 var ExerciseC6C = artifacts.require("ExerciseC6C");
+var ExerciseC6CApp = artifacts.require("ExerciseC6CApp");
+
 
 var Config = async function(accounts) {
 
     // These test addresses are useful when you need to add
     // multiple users in test scripts
     let testAddresses = [
-        "0x69e1CB5cFcA8A311586e3406ed0301C06fb839a2",
-        "0xF014343BDFFbED8660A9d8721deC985126f189F3",
-        "0x0E79EDbD6A727CfeE09A2b1d0A59F7752d5bf7C9",
-        "0x9bC1169Ca09555bf2721A5C9eC6D69c8073bfeB4",
-        "0xa23eAEf02F9E0338EEcDa8Fdd0A73aDD781b2A86",
-        "0x6b85cc8f612d5457d49775439335f83e12b8cfde",
-        "0xcbd22ff1ded1423fbc24a7af2148745878800024",
-        "0xc257274276a4e539741ca11b590b9447b26a8051",
-        "0x2f2899d6d35b1a48a4fbdc93a37a72f264a9fca7"
+        "0x09ca62860d3a215e8999d9ed76306899ec0d42f5",
+        "0x9c5073e861405c8f2c3afc9932bc026310012f41",
+        "0x63a59dd1594f866ea763aff8ddc3101955a0df66",
+        "0x28d1515a897bdc5212b79cd614c805740d02acf5",
+        "0x9f7a40bfacab7665f1f7802955747ba86a6eb8fb",
+        "0x0c08a91bcd655598a6dde428acdf40115da14666",
+        "0x661b03327b7d27d535f82283fd07d083bf8fb9ff",
+        "0x5fbe05ca0768533aa4e377ff8a242a5c2f18b20a",
+        "0x5ac7c639f193dca7ee35d959de924ca63eb3462b",
+        "0x1403a107a01f5dc11c29d1c57896b036528b84df"
     ];
 
 
@@ -24,6 +27,8 @@ var Config = async function(accounts) {
     let exerciseC6A = await ExerciseC6A.new();
     let exerciseC6B = await ExerciseC6B.new();
     let exerciseC6C = await ExerciseC6C.new();
+    let exerciseC6CApp = await ExerciseC6CApp.new(exerciseC6C.address);
+
 
     return {
         owner: owner,
@@ -31,6 +36,8 @@ var Config = async function(accounts) {
         exerciseC6A: exerciseC6A,
         exerciseC6B: exerciseC6B,
         exerciseC6C: exerciseC6C,
+        exerciseC6CApp: exerciseC6CApp,
+
     }
 }
 
