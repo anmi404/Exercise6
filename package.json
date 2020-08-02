@@ -15,7 +15,12 @@
     "bignumber": "1.1.0",
     "openzeppelin-solidity": "^1.10.0",
     "truffle": "^4.1.14",
-    "truffle-hdwallet-provider": "^0.0.5"
+    "dot-prop": ">=5.1.1",
+    "elliptic": ">=6.5.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "truffle-hdwallet-provider": "^1.0.5",
+    "dot-prop": ">=5.1.1",
+    "elliptic": ">=6.5.3"
+  }
 }
